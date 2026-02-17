@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bulk Certificate Generator</title>
+    <style>
+      :root {
+        font-family: Arial, sans-serif;
+        color: #202124;
+      }
+      body {
+        margin: 0;
+        background: #f4f6fb;
+      }
+      .container {
+        max-width: 760px;
+        margin: 40px auto;
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      }
+      h1 {
+        margin-top: 0;
+      }
+      .hint {
+        background: #eef5ff;
+        border-left: 4px solid #2f78ff;
+        padding: 12px;
+        border-radius: 6px;
+      }
+      .field {
+        margin-top: 18px;
+      }
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+      }
+      input[type="file"] {
+        width: 100%;
+      }
+      button {
+        margin-top: 22px;
+        background: #2f78ff;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #1f5fd1;
+      }
+      .flash {
+        margin-top: 16px;
+        background: #ffe9e9;
+        color: #9b1c1c;
+        padding: 10px;
+        border-radius: 6px;
+      }
+      code {
+        background: #f0f1f5;
+        padding: 2px 5px;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Bulk Certificate Generator</h1>
+      <p>Create certificates in bulk using a PowerPoint template and participant Excel file.</p>
+
+      <div class="hint">
+        <strong>How it works:</strong>
+        <ul>
+          <li>Upload a <code>.pptx</code> certificate template containing placeholders like {% raw %}<code>{{student_name}}</code>{% endraw %}.</li>
+          <li>Upload an Excel file with matching column names (for example: <code>student_name</code>).</li>
+          <li>Download one ZIP file containing all generated certificates and a manifest Excel file.</li>
+        </ul>
+      </div>
+
+      <form action="/generate" method="post" enctype="multipart/form-data">
+        <div class="field">
+          <label for="template_file">Certificate Template (PPTX)</label>
+          <input id="template_file" type="file" name="template_file" accept=".pptx" required />
+        </div>
+
+        <div class="field">
+          <label for="participants_file">Participant Details (Excel)</label>
+          <input id="participants_file" type="file" name="participants_file" accept=".xlsx,.xls" required />
+        </div>
+
+        <button type="submit">Generate Certificates</button>
+      </form>
+
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+            <div class="flash">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+  </body>
+</html>
